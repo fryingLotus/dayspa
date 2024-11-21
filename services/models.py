@@ -1,6 +1,9 @@
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 from django.conf import settings  # Add this for User model reference
+
+from accounts.models import User
 
 
 class Coupon(models.Model):
@@ -22,7 +25,7 @@ class Service(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     coupon = models.ForeignKey(
         "services.Coupon", on_delete=models.SET_NULL, null=True, blank=True
-    )  # Fixed reference
+    )
     service_image = models.ImageField(upload_to="services/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -49,36 +52,10 @@ class Service(models.Model):
 
     def __str__(self):
         return self.service_name
-
-
-class StaffProfile(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
-    )  # Fixed reference
-    bio = models.TextField(blank=True)
-    services = models.ManyToManyField(
-        "services.Service", through="services.StaffService"
-    )  # Fixed reference
-    is_available = models.BooleanField(default=True)
-
-    def __str__(self):
-        return f"{self.user.first_name} {self.user.last_name}"
-
-
 class StaffService(models.Model):
-    """
-    Simple intermediate model to track which staff can perform which services
-    """
-
-    staff = models.ForeignKey(
-        "services.StaffProfile", on_delete=models.CASCADE
-    )  # Fixed reference
-    service = models.ForeignKey(
-        "services.Service", on_delete=models.CASCADE
-    )  # Fixed reference
+    staff = models.ForeignKey(User, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    is_primary = models.BooleanField(default=False)
 
     class Meta:
-        unique_together = ("staff", "service")
-
-    def __str__(self):
-        return f"{self.staff} - {self.service.service_name}"
+        unique_together = ('staff', 'service')

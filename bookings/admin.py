@@ -1,6 +1,6 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
-from .models import Appointment, Payment
+from .models import Appointment, Payment, AppointmentStaff
 from accounts.models import Role, User
 from services.models import Service
 
@@ -13,7 +13,6 @@ class CustomAppointmentClass(ModelAdmin):
     list_display = [
         "id",
         "user_email",
-        "staff_email",
         "formatted_appointment_time",
         "status",
         "total_services",
@@ -36,10 +35,7 @@ class CustomAppointmentClass(ModelAdmin):
 
     user_email.short_description = "Customer"
 
-    def staff_email(self, obj):
-        return obj.staff.email
-
-    staff_email.short_description = "Staff"
+  
 
     def formatted_appointment_time(self, obj):
         return obj.appointment_time.strftime("%Y-%m-%d %H:%M")
@@ -123,3 +119,13 @@ class CustomPaymentClass(ModelAdmin):
         # Example: you can filter payments by status or other criteria
         # queryset = queryset.filter(payment_status='completed')
         return queryset
+
+    
+    
+@admin.register(AppointmentStaff)
+class AppointmentStaffAdmin(ModelAdmin):
+    list_display = ('appointment', 'staff', 'created_at')
+    search_fields = ('appointment__user__email', 'staff__email')
+    list_filter = ('created_at',)
+    readonly_fields = ('created_at',)
+    
