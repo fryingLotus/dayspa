@@ -1,0 +1,45 @@
+# Python-related
+*.py[cod]          # Compiled Python files
+__pycache__/       # Python cache files
+*.pyo              # Optimized Python files
+*.pyd              # Windows DLL files for Python
+
+# Virtual environments
+env/
+venv/
+ENV/
+.venv/
+.pipenv/           # Pipenv environment
+*.egg
+*.egg-info/
+.eggs/
+
+# Django-specific
+*.log              # Log files
+local_settings.py  # Local configuration (optional, depends on your project structure)
+db.sqlite3         # SQLite database file (if used)
+media/             # Uploaded media files
+staticfiles/       # Collected static files
+
+# Ignore migrations cache
+migrations/*       # Exclude migrations, but not __init__.py
+!migrations/__init__.py
+
+# IDE and editor files
+.vscode/           # Visual Studio Code settings
+.idea/             # PyCharm settings
+*.sublime-project
+*.sublime-workspace
+*.swp              # Swap files
+*.bak              # Backup files
+*.tmp              # Temporary files
+
+# Operating system files
+.DS_Store          # macOS
+Thumbs.db          # Windows
+
+# Security and sensitive files
+*.env              # Environment variables
+.env               # Env files (dotenv)
+secrets.json       # JSON file with sensitive info (if applicable)
+
