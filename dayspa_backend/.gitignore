@@ -41,3 +41,5 @@ Thumbs.db          # Windows
 *.env              # Environment variables
 .env               # Env files (dotenv)
 secrets.json       # JSON file with sensitive info (if applicable)
+*.env
+*.env
